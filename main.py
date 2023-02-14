@@ -8,12 +8,14 @@ from __init__ import app  # Definitions initialization
 from model_chess import createTestingData
 
 # setup APIs
+from server import server
 from testApi import server2
 from superCoolFile import chess_user_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 
 # register URIs
+app.register_blueprint(server)
 app.register_blueprint(server2)
 app.register_blueprint(chess_user_api)
 app.register_blueprint(app_projects) # register app pages
