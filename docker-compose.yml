@@ -4,7 +4,7 @@ services:
                 image: tgddkp_flask_v2
                 build: .
                 ports:
-                        - "8036:8080"
+                        - "8069:8080"
                 volumes:
                         - ./volumes:/volumes
                         - ./instance:/instance
