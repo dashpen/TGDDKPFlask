@@ -19,7 +19,7 @@ class ChessUsers(UserMixin, db.Model):
 
     # constructor of a User object, initializes of instance variables within object
     def __init__(self, name, uid="0", password="null", dob="11-11-1111", games=""):
-        self.uid = uid
+        self.uid = make_id()
         self.name = name
         self.dob = dob
         self.games = ""
@@ -128,22 +128,16 @@ def createTestingData():
     with app.app_context():
         db.init_app(app)
         db.create_all()
-        u1 = ChessUsers(name='Toby', password="lmaobad", uid="12")
+        u1 = ChessUsers(name='Toby', password="lmaobad")
+        u2 = ChessUsers(name='Gene', password="WRizz")
         try:
             '''add user/note data to table'''
             u1.create()
+            u2.create()
         except IntegrityError:
             '''fails with bad or duplicate data'''
             db.session.remove()
             print(f"Records exist, duplicate email, or error: {u1.uid}")
-        # createTable(u1)
-        # u2 = ChessUsers(name='Gene', password="WRizz", uid="123")
-        # createTable(u2)
 
 if __name__ == "__main__":
     createTestingData()
-    user1 = ChessUsers(password="lame", name="Billy")
-    print(user1.uid)
-    # badUser = getUser(102)
-    # badUser.delete()
-    print("asdf")
