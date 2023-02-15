@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from flask import Blueprint, request, jsonify
+from model_battleship import BattleshipUsers
 
 class ChessUsers(UserMixin, db.Model):
     __tablename__ = 'chess_users'
@@ -19,7 +20,7 @@ class ChessUsers(UserMixin, db.Model):
 
     # constructor of a User object, initializes of instance variables within object
     def __init__(self, name, uid="0", password="null", dob="11-11-1111", games=""):
-        self.uid = make_id()
+        self.uid = uid
         self.name = name
         self.dob = dob
         self.games = ""
@@ -123,17 +124,21 @@ def make_id():
     if (uid < 100):
         return 100
     return uid + 1
-
+    
 def createTestingData():
     with app.app_context():
         db.init_app(app)
         db.create_all()
-        u1 = ChessUsers(name='Toby', password="lmaobad")
-        u2 = ChessUsers(name='Gene', password="WRizz")
+        u1 = ChessUsers(name='Toby', password="lmaobad", uid="12")
+        u2 = ChessUsers(name='Gene', password="WRizz", uid="123")
+        u3 = BattleshipUsers(username='das', score="19")
+        u4 = BattleshipUsers(username='parav', score="34")
         try:
             '''add user/note data to table'''
             u1.create()
             u2.create()
+            u3.create()
+            u4.create()
         except IntegrityError:
             '''fails with bad or duplicate data'''
             db.session.remove()

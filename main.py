@@ -11,6 +11,7 @@ from model_chess import createTestingData
 from server import server
 from testApi import server2
 from superCoolFile import chess_user_api
+from battleship import battleship_user_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 
@@ -18,6 +19,7 @@ from projects.projects import app_projects # Blueprint directory import projects
 app.register_blueprint(server)
 app.register_blueprint(server2)
 app.register_blueprint(chess_user_api)
+app.register_blueprint(battleship_user_api)
 app.register_blueprint(app_projects) # register app pages
 
 @app.errorhandler(404)  # catch for URL not found
@@ -36,6 +38,7 @@ def stub():
 @app.before_first_request
 def activate_job():
     createTestingData()
+    # createBattleshipTable()
 
 # this runs the application on the development server
 if __name__ == "__main__":
