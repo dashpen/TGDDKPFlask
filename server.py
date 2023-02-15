@@ -28,7 +28,7 @@ class ChessAPI:
     
     class _start(Resource):
         def post(self):
-            # request body format: "{'data' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}"
+            # request body format: "{'date' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}"
             global data
             body = ast.literal_eval(request.get_data(..., True).replace("[", "{").replace("]", "}"))
             data.append(body)
@@ -40,18 +40,20 @@ class ChessAPI:
             data = []
             return data
 
-    class _search(Resource):
-        def post (self):
+    class _endSearch(Resource):
+        def post(self):
             global data
-            data.append("searching")
+            body = request.get_data(..., True)
+            for item in data:
+                if item[9:] == body:
+                    data.remove(item)
             return data
-
 
     api.add_resource(_get, '/')
     api.add_resource(_push, '/post')
     api.add_resource(_start, '/start')
     api.add_resource(_clear, '/clear')
-    api.add_resource(_search, '/search')
+    api.add_resource(_endSearch, '/endSearch')
 
 if __name__ == "__main__": 
     print("LMAO LOOSER!")
