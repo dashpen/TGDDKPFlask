@@ -5,7 +5,7 @@ import ast
 
 # Blueprints allow this code to be procedurally abstracted from main.py, meaning code is not all in one place
 server = Blueprint('server', __name__,
-                   url_prefix='/api/server')  # endpoint prefix avoid redundantly typing /api/jokes over and over
+                   url_prefix='/api/server')  # endpoint prefix 
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
 api = Api(server)
