@@ -10,7 +10,7 @@ server = Blueprint('server', __name__,
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
 api = Api(server)
 
-data = []
+data = ["yo"]
 
 class ChessAPI:
 
@@ -35,7 +35,7 @@ class ChessAPI:
             return data
 
     class _clear(Resource):
-        def clear(self):
+        def post(self):
             global data
             data = []
             return data
