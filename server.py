@@ -43,7 +43,7 @@ class ChessAPI:
     class _search(Resource):
         def post (self):
             global data
-            body = request.get_data(...,T rue)
+            body = request.get_data(..., True)
             data.append(body)
             return data
 
