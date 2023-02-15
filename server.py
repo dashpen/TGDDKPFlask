@@ -28,7 +28,7 @@ class ChessAPI:
     
     class _start(Resource):
         def post(self):
-            # request body format: "{'data' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}"
+            # request body format: "{'date' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}"
             global data
             body = ast.literal_eval(request.get_data(..., True).replace("[", "{").replace("]", "}"))
             data.append(body)
@@ -40,6 +40,14 @@ class ChessAPI:
             data = []
             return data
 
+    class _endSearch(Resource):
+        def post(self):
+            global data
+            body = request.get_data(..., True)
+            for item in data:
+                if item[9:] == body:
+                    data.remove(item)
+            return data
 
     api.add_resource(_get, '/')
     api.add_resource(_push, '/post')
