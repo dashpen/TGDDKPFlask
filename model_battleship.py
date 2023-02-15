@@ -5,18 +5,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from flask import Blueprint, request, jsonify
 
-class BattleshipUsers(UserMixin, db.Model):
+class BattleshipUsers(db.Model):
     __tablename__ = 'battleship_users'
     
     # Define the Users schema
-    username = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(255), primary_key=True)
     score = db.Column(db.String(255), unique=False, nullable=False)
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # notes = db.relationship("Notes", cascade='all, delete', backref='users', lazy=True)
 
     # constructor of a User object, initializes of instance variables within object
-    def __init__(self, username="", score=""):
-        self.username = make_id(username)
+    def __init__(self, username="", score="0"):
+        self.username = username
         self.score = score
 
     # returns a string representation of object, similar to java toString()
@@ -71,41 +71,17 @@ class BattleshipUsers(UserMixin, db.Model):
     def get_score(self):
         return self.score
 
-def getUser(score):
+def get_scores():
     users = BattleshipUsers.query.all()
+    highScore = 0
+    middleScore = 0
+    lowScore = 0
     for user in users:
-        if(user.get_score() == score):
-            return user
-        
-def make_id():
-    users = BattleshipUsers.query.all()
-    score = 0
-    for user in users:
-        if(user.get_score() > score):
-            score = user.get_score()
-    if (score < 100):
-        return 100
-    return score + 1
+        if (user.score > highScore):
+            highScore = user.score
+        else:
+            print("ahap")
 
-def createBattleshipTable():
-    with app.app_context():
-        db.init_app(app)
-        db.create_all()
-        u1 = BattleshipUsers(username='Toby', score="19")
-        u2 = BattleshipUsers(username='Gene', score="34")
-        try:
-            '''add user/note data to table'''
-            u1.create()
-            u2.create()
-        except IntegrityError:
-            '''fails with bad or duplicate data'''
-            db.session.remove()
-            print(f"Records exist, duplicate email, or error: {u1.username}")
 
 if __name__ == "__main__":
-    # createTestingData()
-    user1 = BattleshipUsers(score="18", name="Bum")
-    print(user1.username)
-    # badUser = getUser(102)
-    # badUser.delete()
-    print("asdf")
+    print("hi")
