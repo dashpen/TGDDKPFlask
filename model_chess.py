@@ -20,7 +20,7 @@ class ChessUsers(UserMixin, db.Model):
 
     # constructor of a User object, initializes of instance variables within object
     def __init__(self, name, uid="0", password="null", dob="11-11-1111", games=""):
-        self.uid = uid
+        self.uid = make_id()
         self.name = name
         self.dob = dob
         self.games = ""
