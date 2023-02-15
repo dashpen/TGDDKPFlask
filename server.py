@@ -53,6 +53,7 @@ class ChessAPI:
     api.add_resource(_push, '/post')
     api.add_resource(_start, '/start')
     api.add_resource(_clear, '/clear')
+    api.add_resource(_endSearch, '/endSearch')
 
 if __name__ == "__main__": 
     print("LMAO LOOSER!")
