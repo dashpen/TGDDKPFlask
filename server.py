@@ -34,13 +34,17 @@ class ChessAPI:
             data.append(body)
             return data
 
-
-    # class _clear(Resource):
+    class _clear(Resource):
+        def clear(self):
+            global data
+            data = []
+            return data
 
 
     api.add_resource(_get, '/')
     api.add_resource(_push, '/post')
     api.add_resource(_start, '/start')
+    api.add_resource(_clear, '/clear')
 
 if __name__ == "__main__": 
     print("LMAO LOOSER!")
