@@ -4,6 +4,7 @@ from datetime import datetime
 from model_chess import getUser
 
 from model_battleship import BattleshipUsers
+from model_battleship import get_scores
 
 battleship_user_api = Blueprint('battleship_user_api', __name__,
                    url_prefix='/api/battleship_users')
@@ -21,9 +22,9 @@ class UserAPI:
             name = body.get('username')
             if name is None or len(name) < 2:
                 return {'message': f'Name is missing, or is less than 2 characters'}, 210
-
+            score = body.get('score')
             ''' #1: Key code block, setup USER OBJECT '''
-            uo = BattleshipUsers(name=name)
+            uo = BattleshipUsers(username=name, score=score)
             ''' #2: Key Code block to add user to database '''
             # create user in database
             uo.create()
@@ -38,7 +39,12 @@ class UserAPI:
             users = BattleshipUsers.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
+    
+    class _Scores(Resource):
+        def get(self):
+            return jsonify(get_scores())
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
+    api.add_resource(_Scores, '/scores')
     api.add_resource(_Read, '/')

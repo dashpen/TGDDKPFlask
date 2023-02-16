@@ -76,13 +76,17 @@ def get_scores():
     highScore = 0
     middleScore = 0
     lowScore = 0
-    for user in users:
-        if (user.score > highScore):
-            highScore = user.score
-        elif (user.score > middleScore):
-            middleScore = user.score
-        elif (user.score > lowScore):
-            lowScore = user.score
+    scoreTypes = [highScore, middleScore, lowScore]
+    for i in range(3):
+        for user in users:
+            score = int(user.score)
+            if score > scoreTypes[i]:
+                scoreTypes[i] = score
+        for user in users:
+            if int(user.score) == scoreTypes[i]:
+                users.remove(user)
+
+    return {"highScore": scoreTypes[0], "middleScore": scoreTypes[1], "lowScore": scoreTypes[2]}
 
 if __name__ == "__main__":
     print("hi")
