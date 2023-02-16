@@ -2,6 +2,7 @@ import os
 from __init__ import db, app
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from flask_login import UserMixin
 from flask import Blueprint, request, jsonify
 from model_battleship import BattleshipUsers
@@ -114,6 +115,11 @@ def getUser(uid):
     for user in users:
         if(user.get_id() == uid):
             return user
+def getName(name):
+    user = ChessUsers.query.all()
+    for user in name:
+        if(user.get_name() == name):
+            return name
         
 def make_id():
     users = ChessUsers.query.all()

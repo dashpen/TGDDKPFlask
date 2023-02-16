@@ -5,12 +5,13 @@ import json as JSON
 import ast
 from model_chess import check_password_hash
 from model_chess import getUser
+from model_chess import getName
 # Blueprints allow this code to be procedurally abstracted from main.py, meaning code is not all in one place
-server1 = Blueprint('balls', __name__,
-                   url_prefix='/api/server1')  # endpoint prefix avoid redundantly typing /api/jokes over and over
+NameAPI = Blueprint('NameAPI', __name__,
+                   url_prefix='/api/names')  # endpoint prefix avoid redundantly typing /api/jokes over and over
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
-api = Api(server1)
+api = Api(NameAPI)
 
 data = []
 
