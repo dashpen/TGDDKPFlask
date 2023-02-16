@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from flask import Blueprint, request, jsonify
 from model_battleship import BattleshipUsers
+from model_roulette import Roulette
 
 class ChessUsers(UserMixin, db.Model):
     __tablename__ = 'chess_users'
@@ -139,12 +140,16 @@ def createTestingData():
         u2 = ChessUsers(name='Gene', password="WRizz", uid="123")
         u3 = BattleshipUsers(username='das', score="19")
         u4 = BattleshipUsers(username='parav', score="34")
+        u5 = Roulette(user='Kalani', score="20")
+        u6 = Roulette(user='sup', score="21")
         try:
             '''add user/note data to table'''
             u1.create()
             u2.create()
             u3.create()
             u4.create()
+            u5.create()
+            u6.create()
         except IntegrityError:
             '''fails with bad or duplicate data'''
             db.session.remove()
@@ -152,3 +157,4 @@ def createTestingData():
 
 if __name__ == "__main__":
     createTestingData()
+    
