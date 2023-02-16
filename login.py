@@ -11,22 +11,15 @@ NameAPI = Blueprint('NameAPI', __name__,
                    url_prefix='/api/names')  # endpoint prefix avoid redundantly typing /api/jokes over and over
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
-class _Security(Resource):
+class _Read(Resource):
 
         def post(self):
-            ''' Read data for json body '''
             body = request.get_json()
-            
-            ''' Get Data '''
             name = body.get('name')
             if name is None or len(name) < 2:
                 return {'message': f'Name is missing, or is less than 2 characters'}, 400
             password = body.get('password')
-            
-            ''' Find user '''
             user = ChessUsers.query.filter_by(_name=name).first()
             if user is None or not user.is_password(password):
                 return {'message': f"Invalid user id or password"}, 400
-            
-            ''' authenticated user '''
             return jsonify(user.read())
