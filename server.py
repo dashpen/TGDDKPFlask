@@ -13,6 +13,14 @@ api = Api(server)
 
 data = []
 
+def changeToJSON(bad):
+    good = ''
+    for i in bad:
+        if i != "'":
+            good = good + i
+        elif i == "'":
+            good = good + '"'
+    return JSON.loads(good)
 class ChessAPI:
 
     class _get(Resource):
@@ -22,25 +30,32 @@ class ChessAPI:
     class _push(Resource):
         def post(self):
             global data
-            body = ast.literal_eval(request.get_data(..., True).replace("[", "{").replace("]", "}"))
+            body = request.get_data(..., True).replace("[", "{").replace("]", "}")
             data.append(body)
             return data 
     
     class _start(Resource):
         def post(self):
-            # request body format: "{'gid' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}"
+            # request body format: {'gid' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}
             global data
-            body = ast.literal_eval(request.get_data(..., True).replace("[", "{").replace("]", "}"))
+            body = request.get_data(..., True).replace("[", "{").replace("]", "}")
+            body = changeToJSON(body)
             data.append(body)
             return data
         
     class _secondPlayer(Resource):
         def post(self):
+            #body format : "["uid", "gid"]"
             global data
-            body = JSON.parse(request.get_data(..., True))
-            data = body
-            return data
+            body = changeToJSON(request.get_data(..., True))
+            i = -1
+            for item in data:
+                i += 1
+                if body[1] in item:
+                    data[i][body[1]]["uid2"] = body[0]
 
+                    
+            return data
 
     class _clear(Resource):
         def post(self):
@@ -48,12 +63,24 @@ class ChessAPI:
             data = []
             return data
 
+    class _pushMove(Resource):
+        def post(self):
+            global data
+            body = changeToJSON(request.get_data(..., True))
+            i = -1
+            for item in data:
+                i += 1
+                if body[0] in item:
+                    data[i][body[0]]["move1"] = body[1]
+                    data[i][body[0]]["move2"] = body[2]
+
 
     api.add_resource(_get, '/')
     api.add_resource(_push, '/post')
     api.add_resource(_start, '/start')
     api.add_resource(_clear, '/clear')
     api.add_resource(_secondPlayer, '/secondPlayer')
+    api.add_resource(_pushMove, '/pushMove')
 
 if __name__ == "__main__": 
     print("LMAO LOOSER!")
