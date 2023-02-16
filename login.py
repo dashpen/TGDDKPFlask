@@ -5,31 +5,21 @@ import json as JSON
 import ast
 from model_chess import check_password_hash
 from model_chess import getUser
+from model_chess import ChessUsers
 # Blueprints allow this code to be procedurally abstracted from main.py, meaning code is not all in one place
-server1 = Blueprint('balls', __name__,
-                   url_prefix='/api/server1')  # endpoint prefix avoid redundantly typing /api/jokes over and over
+NameAPI = Blueprint('NameAPI', __name__,
+                   url_prefix='/api/names')  # endpoint prefix avoid redundantly typing /api/jokes over and over
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
-api = Api(server1)
+class _Read(Resource):
 
-data = []
-
-class ChessAPI:
-    class _check(Resource):
-        def get(self):
-            body = request.json()
-            return check_password_hash
-
-
-
-
-                
-
-
-    # class _clear(Resource):
-
-
-    api.add_resource(_check, '/')
-
-if __name__ == "__main__": 
-    print("LMAO LOOSER!")
+        def post(self):
+            body = request.get_json()
+            name = body.get('name')
+            if name is None or len(name) < 2:
+                return {'message': f'Name is missing, or is less than 2 characters'}, 400
+            password = body.get('password')
+            user = ChessUsers.query.filter_by(_name=name).first()
+            if user is None or not user.is_password(password):
+                return {'message': f"Invalid user id or password"}, 400
+            return jsonify(user.read())

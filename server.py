@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_restful import Api, Resource 
 import requests   
 import ast
+import json as JSON
 
 # Blueprints allow this code to be procedurally abstracted from main.py, meaning code is not all in one place
 server = Blueprint('server', __name__,
@@ -21,18 +22,25 @@ class ChessAPI:
     class _push(Resource):
         def post(self):
             global data
-            body = request.get_data(..., True)
-            print(body)
+            body = ast.literal_eval(request.get_data(..., True).replace("[", "{").replace("]", "}"))
             data.append(body)
             return data 
     
     class _start(Resource):
         def post(self):
-            # request body format: "{'date' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}"
+            # request body format: "{'gid' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}"
             global data
             body = ast.literal_eval(request.get_data(..., True).replace("[", "{").replace("]", "}"))
             data.append(body)
             return data
+        
+    class _secondPlayer(Resource):
+        def post(self):
+            global data
+            body = JSON.parse(request.get_data(..., True))
+            data = body
+            return data
+
 
     class _clear(Resource):
         def post(self):
@@ -40,20 +48,12 @@ class ChessAPI:
             data = []
             return data
 
-    class _endSearch(Resource):
-        def post(self):
-            global data
-            body = request.get_data(..., True)
-            for item in data:
-                if item[9:] == body:
-                    data.remove(item)
-            return data
 
     api.add_resource(_get, '/')
     api.add_resource(_push, '/post')
     api.add_resource(_start, '/start')
     api.add_resource(_clear, '/clear')
-    api.add_resource(_endSearch, '/endSearch')
+    api.add_resource(_secondPlayer, '/secondPlayer')
 
 if __name__ == "__main__": 
     print("LMAO LOOSER!")
