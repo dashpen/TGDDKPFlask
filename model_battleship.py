@@ -79,9 +79,10 @@ def get_scores():
     for user in users:
         if (user.score > highScore):
             highScore = user.score
-        else:
-            print("ahap")
-
+        elif (user.score > middleScore):
+            middleScore = user.score
+        elif (user.score > lowScore):
+            lowScore = user.score
 
 if __name__ == "__main__":
     print("hi")
