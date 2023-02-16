@@ -50,6 +50,12 @@ class Roulette(db.Model):
         except IntegrityError:
             db.session.remove()
             return None
+    
+    def read(self):
+        return {
+            "user": self.user,
+            "score": self.score,
+        }
 
 
 def roulettes_table_empty():

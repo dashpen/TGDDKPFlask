@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource, reqparse
 from __init__ import db
 from model_roulette import Roulette
@@ -9,14 +9,15 @@ roulette_api = Api(roulette_bp)
 
 
 class RouletteAPI(Resource):
-    def get(self):
-        user = request.args.get("user")
-        try:
-            roulette = db.session.query(Roulette).filter_by(_user=user).one()
-            if roulette:
-                return roulette.to_dict()
-        except:
-            return {"message": "user not found"}, 404
+    class _Get(Resource):
+        def get(self):
+            user = request.args.get("user")
+            try:
+                roulette = db.session.query(Roulette).filter_by(_user=user).one()
+                if roulette:
+                    return roulette.to_dict()
+            except:
+                return {"message": "user not found"}, 404
 
     class _Create(Resource):
         def post(self):
@@ -70,8 +71,14 @@ class RouletteAPI(Resource):
             except Exception as e:
                 db.session.rollback()
                 return {"message": f"server error: {e}"}, 500
+    class _GetAll(Resource):
+        def get(self):
+            users = Roulette.query.all()    # read/extract all users from database
+            json_ready = [user.read() for user in users]  # prepare output in json
+            return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
 
     roulette_api.add_resource(_Create, "/create") #
     roulette_api.add_resource(_Update, "/update")
     roulette_api.add_resource(_Remove, "/remove")
+    roulette_api.add_resource(_GetAll, "/")

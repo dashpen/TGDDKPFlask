@@ -68,6 +68,7 @@ class UserAPI:
     class _DeleteGame(Resource):
         def delete(self, uid, gameID):
             user = getUser(uid)
+            
     
     class _DeleteUser(Resource):
         def delete(self, uid):
@@ -78,6 +79,6 @@ class UserAPI:
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
-    api.add_resource(_Read, '/Authenticate')
+    api.add_resource(_Read, '/')
     api.add_resource(_UpdateChessGame, "/update_game/<int:uid>")
     api.add_resource(_DeleteUser, "/delete_user/<int:uid>")
