@@ -73,14 +73,14 @@ class BattleshipUsers(db.Model):
 
 def get_scores():
     users = BattleshipUsers.query.all()
-    highScore = 0
-    middleScore = 0
-    lowScore = 0
+    highScore = 999999
+    middleScore = 999999
+    lowScore = 999999
     scoreTypes = [highScore, middleScore, lowScore]
     for i in range(3):
         for user in users:
             score = int(user.score)
-            if score > scoreTypes[i]:
+            if score < scoreTypes[i]:
                 scoreTypes[i] = score
         for user in users:
             if int(user.score) == scoreTypes[i]:
