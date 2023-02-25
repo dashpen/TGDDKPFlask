@@ -18,60 +18,55 @@ class RouletteAPI(Resource):
         except:
             return {"message": "user not found"}, 404
 
-    class _Create(Resource):
-        def post(self):
-            parser = reqparse.RequestParser()
-            parser.add_argument("user", required=True, type=str)
-            parser.add_argument("score", required=True, type=int)
-            args = parser.parse_args()
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("user", required=True, type=str)
+        parser.add_argument("score", required=True, type=int)
+        args = parser.parse_args()
 
-            roulette = Roulette(args["user"], args["score"])
-            try:
-                db.session.add(roulette)
+        roulette = Roulette(args["user"], args["score"])
+        try:
+            db.session.add(roulette)
+            db.session.commit()
+            return roulette.to_dict(), 201
+        except Exception as e:
+            db.session.rollback()
+            return {"message": f"server error: {e}"}, 500
+
+    def put(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("user", required=True, type=str)
+        parser.add_argument("score", required=True, type=int)
+        args = parser.parse_args()
+
+        try:
+            roulette = db.session.query(Roulette).filter_by(_user=args["user"]).one()
+            if roulette:
+                roulette.score = args["score"]
                 db.session.commit()
-                return roulette.to_dict(), 201
-            except Exception as e:
-                db.session.rollback()
-                return {"message": f"server error: {e}"}, 500
+                return roulette.to_dict()
+            else:
+                return {"message": "roulette not found"}, 404
+        except Exception as e:
+            db.session.rollback()
+            return {"message": f"server error: {e}"}, 500
 
-    class _Update(Resource):
-        def put(self):
-            parser = reqparse.RequestParser()
-            parser.add_argument("user", required=True, type=str)
-            parser.add_argument("score", required=True, type=int)
-            args = parser.parse_args()
+    def delete(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("id", required=True, type=int)
+        args = parser.parse_args()
 
-            try:
-                roulette = db.session.query(Roulette).filter_by(_user=args["user"]).one()
-                if roulette:
-                    roulette.score = args["score"]
-                    db.session.commit()
-                    return roulette.to_dict()
-                else:
-                    return {"message": "roulette not found"}, 404
-            except Exception as e:
-                db.session.rollback()
-                return {"message": f"server error: {e}"}, 500
-
-    class _Remove(Resource):
-        def delete(self):
-            parser = reqparse.RequestParser()
-            parser.add_argument("id", required=True, type=int)
-            args = parser.parse_args()
-
-            try:
-                roulette = db.session.query(Roulette).get(args["id"])
-                if roulette:
-                    db.session.delete(roulette)
-                    db.session.commit()
-                    return roulette.to_dict()
-                else:
-                    return {"message": "roulette not found"}, 404
-            except Exception as e:
-                db.session.rollback()
-                return {"message": f"server error: {e}"}, 500
+        try:
+            roulette = db.session.query(Roulette).get(args["id"])
+            if roulette:
+                db.session.delete(roulette)
+                db.session.commit()
+                return roulette.to_dict()
+            else:
+                return {"message": "roulette not found"}, 404
+        except Exception as e:
+            db.session.rollback()
+            return {"message": f"server error: {e}"}, 500
 
 
-    roulette_api.add_resource(_Create, "/create") #
-    roulette_api.add_resource(_Update, "/update")
-    roulette_api.add_resource(_Remove, "/remove")
+roulette_api.add_resource(RouletteAPI, "/")
