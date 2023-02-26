@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 from datetime import datetime
-from model_chess import getUser
+from model_chess import getUser, getName
 
 from model_chess import ChessUsers
 
@@ -60,25 +60,57 @@ class UserAPI:
 
 
     class _UpdateChessGame(Resource):
-        def post(self, uid):
-            body = request.get_json()
-            user = getUser(uid)
-            user.update_games(body)
+        def post(self):
+            # body = request.get_data(..., True)
+            body = request.get_json(force=True)
+            user1 = getUser(int(body.get('uid1')))
+            user1.update_games(body)
+            try:
+                user2 = getUser(int(body.get('uid2')))
+                user2.update_games(body)
+            except:
+                return "second user id is invalid"
+            return body.get('uid1')
 
     class _DeleteGame(Resource):
-        def delete(self, uid, gameID):
+        def delete(self):
+            body = request.get_json()
+            uid = body.get('uid')
+            date = body.get('date')
             user = getUser(uid)
-            
+            games = user.games.split('#')
+            for game in games:
+                if game.date == date:
+                    user.deleteGame()
+
     
     class _DeleteUser(Resource):
         def delete(self, uid):
             user = getUser(uid)
             user.delete()
             return 'deleted user with uid ' + str(uid)
+    
+    class _GetGame(Resource):
+        def get(self):
+            body = request.get_json()
+            uid = body.get('uid')
+            date = body.get('date')
+            user = getUser(uid)
+            games = user.games.split('#')
+            for game in games:
+                if game.date == date:
+                    return game
 
+    class _GetGames(Resource):
+        def get(self, uid):
+            user = getUser(uid)
+            games = user.games.split('#')
+            return games
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
     api.add_resource(_Read, '/')
-    api.add_resource(_UpdateChessGame, "/update_game/<int:uid>")
+    api.add_resource(_GetGame, '/get_game')
+    api.add_resource(_UpdateChessGame, "/update_game")
+    api.add_resource(_GetGames, '/get_games/<int:uid>')
     api.add_resource(_DeleteUser, "/delete_user/<int:uid>")
