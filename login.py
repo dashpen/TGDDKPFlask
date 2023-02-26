@@ -12,7 +12,6 @@ NameAPI = Blueprint('NameAPI', __name__,
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
 class _Read(Resource):
-
         def post(self):
             body = request.get_json()
             name = body.get('name')
