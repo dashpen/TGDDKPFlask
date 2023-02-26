@@ -103,7 +103,7 @@ class ChessUsers(UserMixin, db.Model):
         return self.uid
 
     def update_games(self, game):
-        self.games += "#" + game
+        self.games += "#" + str(game)
         try:
             db.session.commit()
             return self
@@ -116,6 +116,7 @@ def getUser(uid):
     for user in users:
         if(user.get_id() == uid):
             return user
+
 def getName(name):
     user = ChessUsers.query.all()
     for user in name:
@@ -131,6 +132,13 @@ def make_id():
     if (uid < 100):
         return 100
     return uid + 1
+
+def getGame(uid, date):
+    user = getUser(uid)
+    games = user.games.split('#')
+    for game in games:
+        if game.date == date:
+            return game
     
 def createTestingData():
     with app.app_context():
