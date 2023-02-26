@@ -57,17 +57,17 @@ class RouletteAPI(Resource):
         parser.add_argument("id", required=True, type=int)
         args = parser.parse_args()
 
-            try:
-                roulette = db.session.query(Roulette).get(args["id"])
-                if roulette:
-                    db.session.delete(roulette)
-                    db.session.commit()
-                    return roulette.to_dict()
-                else:
-                    return {"message": "roulette not found"}, 404
-            except Exception as e:
-                db.session.rollback()
-                return {"message": f"server error: {e}"}, 500
+        try:
+            roulette = db.session.query(Roulette).get(args["id"])
+            if roulette:
+                db.session.delete(roulette)
+                db.session.commit()
+                return roulette.to_dict()
+            else:
+                return {"message": "roulette not found"}, 404
+        except Exception as e:
+            db.session.rollback()
+            return {"message": f"server error: {e}"}, 500
     class _GetAll(Resource):
         def get(self):
             users = Roulette.query.all()    # read/extract all users from database
