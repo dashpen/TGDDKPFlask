@@ -43,10 +43,6 @@ def activate_job():
     createTestingData()
     # createBattleshipTable()
 
-<<<<<<< HEAD
-
-=======
 # this runs the application on the development server
 if __name__ == "__main__":
     app.run(debug=True)
->>>>>>> b3a4f6172ffdddde53bfb6a5d03618b957afcda4
