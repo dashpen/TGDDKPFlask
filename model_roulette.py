@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Integer, String
-from __init__ import db
-from sqlalchemy.exc import IntegrityError
-import random
+# from sqlalchemy import Column, Integer, String
+# from __init__ import db
+# from sqlalchemy.exc import IntegrityError
+# import random
 
 
 #class Roulette(db.Model):
