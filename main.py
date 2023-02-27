@@ -43,4 +43,4 @@ def activate_job():
     createTestingData()
     # createBattleshipTable()
 
-        
+
