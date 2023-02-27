@@ -1,11 +1,18 @@
 version: '3'
 services:
-        web:
-                image: tgddkp_flask_v2
-                build: .
-                ports:
-                        - "8069:8080"
-                volumes:
-                        - ./volumes:/volumes
-                        - ./instance:/instance
-                restart: unless-stopped
+      web:
+              image: tgddkp_flask_v2
+              build: .
+              ports:
+                      - "80869:8080"
+              volumes:
+                      - persistent_volume:/app/volumes
+                      - ./instance:/instance
+              restart: unless-stopped
+volumes:
+persistent_volume:
+  driver: local
+  driver_opts:
+    o: bind
+    type: none
+    device: /home/ubuntu/TGDDKPFlask/volumes
