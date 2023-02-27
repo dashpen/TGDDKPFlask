@@ -11,8 +11,9 @@ NameAPI = Blueprint('NameAPI', __name__,
                    url_prefix='/api/names')  # endpoint prefix avoid redundantly typing /api/jokes over and over
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
+api = Api(NameAPI)
 class _Read(Resource):
-        def post(self):
+        def get(self):
             body = request.get_json()
             name = body.get('name')
             if name is None or len(name) < 2:
@@ -22,3 +23,5 @@ class _Read(Resource):
             if user is None or not user.is_password(password):
                 return {'message': f"Invalid user id or password"}, 400
             return jsonify(user.read())
+            
+api.add_resource(_Read, '/')

@@ -14,7 +14,7 @@ from superCoolFile import chess_user_api
 from battleship import battleship_user_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
-
+from login import NameAPI
 
 
 # register URIs
@@ -23,7 +23,7 @@ app.register_blueprint(server2)
 app.register_blueprint(chess_user_api)
 app.register_blueprint(battleship_user_api)
 app.register_blueprint(app_projects) # register app pages
-
+app.register_blueprint(NameAPI)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
@@ -46,4 +46,3 @@ def activate_job():
 # this runs the application on the development server
 if __name__ == "__main__":
     app.run(debug=True)
-
