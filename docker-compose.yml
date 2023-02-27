@@ -7,7 +7,6 @@ services:
                       - "80869:8080"
               volumes:
                       - persistent_volume:/app/volumes
-                      - ./instance:/instance
               restart: unless-stopped
 volumes:
 persistent_volume:
