@@ -75,7 +75,3 @@ class RouletteAPI(Resource):
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
 
-    roulette_api.add_resource(_Create, "/create") #
-    roulette_api.add_resource(_Update, "/update")
-    roulette_api.add_resource(_Remove, "/remove")
-    roulette_api.add_resource(_GetAll, "/")
