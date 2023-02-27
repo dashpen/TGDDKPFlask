@@ -15,7 +15,7 @@ from battleship import battleship_user_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 
-from model_roulette import init_roulettes
+
 
 # register URIs
 app.register_blueprint(server)
