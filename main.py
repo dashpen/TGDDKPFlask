@@ -14,7 +14,7 @@ from superCoolFile import chess_user_api
 from battleship import battleship_user_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
-from roulette import roulette_bp 
+
 from model_roulette import init_roulettes
 
 # register URIs
