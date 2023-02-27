@@ -1,10 +1,10 @@
 version: '3'
 services:
         web:
-                image: tgddkp_flask_v1 
+                image: tgddkp_flask_v2
                 build: .
                 ports:
-                        - "8069:8080" 
+                        - "8069:8080"
                 volumes:
                         - ./volumes:/volumes
                         - ./instance:/instance
