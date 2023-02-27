@@ -1,7 +1,7 @@
 version: '3'
 services:
         web:
-                image: TGDDKP_flask_v1 
+                image: tgddkp_flask_v1 
                 build: .
                 ports:
                         - "8069:8080" 
