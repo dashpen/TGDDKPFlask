@@ -154,8 +154,8 @@ def createTestingData():
             u2.create()
             u3.create()
             u4.create()
-            u5.create()
-            u6.create()
+            #u5.create()
+            #u6.create()
         except IntegrityError:
             '''fails with bad or duplicate data'''
             db.session.remove()
