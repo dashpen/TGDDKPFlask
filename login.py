@@ -3,7 +3,6 @@ from flask_restful import Api, Resource
 import requests   
 import json as JSON
 import ast
-from model_chess import check_password_hash
 from model_chess import getUser
 from model_chess import ChessUsers
 from model_chess import is_password_match
