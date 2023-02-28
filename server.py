@@ -45,7 +45,7 @@ class ChessAPI:
         
     class _secondPlayer(Resource):
         def post(self):
-            #body format : "["uid", "gid"]"
+            # body format : "["uid", "gid"]"
             global data
             body = changeToJSON(request.get_data(..., True))
             i = -1
@@ -53,8 +53,6 @@ class ChessAPI:
                 i += 1
                 if body[1] in item:
                     data[i][body[1]]["uid2"] = body[0]
-
-                    
             return data
 
     class _clear(Resource):
@@ -74,6 +72,27 @@ class ChessAPI:
                     data[i][body[0]]["move1"] = body[1]
                     data[i][body[0]]["move2"] = body[2]
 
+    class _createNewGid(Resource):
+        def get(self):
+            global data
+            i = 0
+            gid = "game" + str(i)
+            for item in data:
+                if gid in item:
+                    testingGid = list(item)[0]
+                    gid = testingGid[:4] + str(int(testingGid[4]) + 1)
+                i += 1
+            return gid
+
+    class _removeGame(Resource):
+        def delete(self):
+            global data
+            body = (request.get_data(..., True))
+            i = -1
+            for item in data:
+                i += 1
+                if body in item:
+                    del data[i]
 
     api.add_resource(_get, '/')
     api.add_resource(_push, '/post')
@@ -81,6 +100,10 @@ class ChessAPI:
     api.add_resource(_clear, '/clear')
     api.add_resource(_secondPlayer, '/secondPlayer')
     api.add_resource(_pushMove, '/pushMove')
+    api.add_resource(_createNewGid, '/createNewGid')
+    api.add_resource(_removeGame, '/removeGame')
+
+
 
 if __name__ == "__main__": 
     print("LMAO LOOSER!")
