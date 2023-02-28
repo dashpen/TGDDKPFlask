@@ -125,7 +125,7 @@ def getName(name):
     user = ChessUsers.query.all()
     for user in name:
         if(user.get_name() == name):
-            return name
+            return user
         
 def make_id():
     users = ChessUsers.query.all()
