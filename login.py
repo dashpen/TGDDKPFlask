@@ -1,4 +1,3 @@
-
 from flask import Blueprint, jsonify, request
 from flask_restful import Api, Resource 
 import requests   
@@ -13,7 +12,6 @@ NameAPI = Blueprint('NameAPI', __name__,
                    url_prefix='/api/names')  # endpoint prefix avoid redundantly typing /api/jokes over and over
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
-app = Flask(__name__)
 api = Api(NameAPI)
 
 # Add CORS support to the NameAPI blueprint
@@ -35,8 +33,9 @@ class _Read(Resource):
             return {'message': f"wrong password"}, 400
         response = jsonify(user.read())
         
-        # Add the 'Access-Control-Allow-Origin' header to the response
+        # Add the 'Access-Control-Allow-Origin' and 'Access-Control-Allow-Headers' headers to the response
         response.headers.add('Access-Control-Allow-Origin', 'https://genechang1.github.io')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         
         return response
 
