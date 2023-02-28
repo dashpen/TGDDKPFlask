@@ -94,7 +94,7 @@ class ChessUsers(UserMixin, db.Model):
                 games.remove(game)
         gameString = ""
         for el in games:
-            gameString += str(el)
+            gameString += "#" + str(el)
         self.games = gameString
         db.session.commit()
         return gameString
