@@ -13,7 +13,7 @@ class ChessUsers(UserMixin, db.Model):
     
     # Define the Users schema
     uid = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), unique=False, nullable=False)
+    name = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
     dob = db.Column(db.String(255), unique = False, nullable=False)
     games = db.Column(db.String(255), unique = False, nullable=False)
@@ -21,7 +21,7 @@ class ChessUsers(UserMixin, db.Model):
     # notes = db.relationship("Notes", cascade='all, delete', backref='users', lazy=True)
 
     # constructor of a User object, initializes of instance variables within object
-    def __init__(self, name, uid="0", password="null", dob="11-11-1111", games=""):
+    def __init__(self, name='', uid="0", password="null", dob="11-11-1111", games=""):
         self.uid = make_id()
         self.name = name
         self.dob = dob
@@ -84,8 +84,12 @@ class ChessUsers(UserMixin, db.Model):
         db.session.commit()
         return None
 
-    def deleteGame(self, gameID):
-        print(self.games)
+    def deleteGame(self, date):
+        games = self.games.split('#')
+        for game in games:
+            if game.date == date:
+                game
+
 
     # set password method is used to create encrypted password
     def set_password(self, password):
