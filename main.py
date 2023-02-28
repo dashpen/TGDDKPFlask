@@ -12,6 +12,7 @@ from server import server
 from testApi import server2
 from superCoolFile import chess_user_api
 from battleship import battleship_user_api
+from roulette import roulette_bp
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 from login import NameAPI
@@ -24,6 +25,7 @@ app.register_blueprint(chess_user_api)
 app.register_blueprint(battleship_user_api)
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(NameAPI)
+app.register_blueprint(roulette_bp)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
