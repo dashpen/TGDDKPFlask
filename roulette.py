@@ -1,10 +1,9 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from flask_restful import Api, Resource, reqparse
 from __init__ import db
 from model_roulette import Roulette
 
-roulette_bp = Blueprint('roulette_bp', __name__,
-                   url_prefix='/api/roulette')
+roulette_bp = Blueprint("roulette", __name__)
 roulette_api = Api(roulette_bp)
 
 
@@ -67,13 +66,6 @@ class RouletteAPI(Resource):
         except Exception as e:
             db.session.rollback()
             return {"message": f"server error: {e}"}, 500
-class _GetAll(Resource):
-    def get(self):
-        users = Roulette.query.all()    # read/extract all users from database
-        json_ready = [user.read() for user in users]  # prepare output in json
-        return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
-    
-roulette_api.add_resource(RouletteAPI, "/create") #
-roulette_api.add_resource(RouletteAPI, "/update")
-roulette_api.add_resource(RouletteAPI, "/remove")
-roulette_api.add_resource(_GetAll, "/")
+
+
+roulette_api.add_resource(RouletteAPI, "/roulette")
