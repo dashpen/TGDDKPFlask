@@ -1,3 +1,4 @@
+from flask import Flask
 from flask import Blueprint, jsonify, request
 from flask_restful import Api, Resource 
 import requests   
@@ -11,6 +12,7 @@ NameAPI = Blueprint('NameAPI', __name__,
                    url_prefix='/api/names')  # endpoint prefix avoid redundantly typing /api/jokes over and over
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
+app = Flask(__name__)
 api = Api(NameAPI)
 
 CORS(api)
