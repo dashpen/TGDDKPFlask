@@ -1,4 +1,4 @@
-import os
+import os, json
 from __init__ import db, app
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -86,9 +86,19 @@ class ChessUsers(UserMixin, db.Model):
 
     def deleteGame(self, date):
         games = self.games.split('#')
+        games.pop(0)
         for game in games:
-            if game.date == date:
-                game
+            gameStr = game.replace("\'", "\"")
+            thing = json.loads(gameStr)
+            if thing['date'] == date:
+                games.remove(game)
+        gameString = ""
+        for el in games:
+            gameString += str(el)
+        self.games = gameString
+        db.session.commit()
+        return gameString
+        
 
 
     # set password method is used to create encrypted password

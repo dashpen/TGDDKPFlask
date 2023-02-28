@@ -74,14 +74,11 @@ class UserAPI:
 
     class _DeleteGame(Resource):
         def delete(self):
-            body = request.get_json()
+            body = request.get_json(force=True)
             uid = body.get('uid')
             date = body.get('date')
-            user = getName(uid)
-            games = user.games.split('#')
-            for game in games:
-                if game.date == date:
-                    user.deleteGame()
+            user = getUser(uid)
+            return user.deleteGame(date)
 
     
     class _DeleteUser(Resource):
