@@ -80,7 +80,7 @@ class ChessAPI:
             for item in data:
                 if gid in item:
                     testingGid = list(item)[0]
-                    gid = testingGid[:4] + str(int(testingGid[4]) + 1)
+                    gid = testingGid[:4] + str(int(testingGid[4:]) + 1)
                 i += 1
             return gid
 
