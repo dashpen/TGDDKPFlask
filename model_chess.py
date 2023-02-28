@@ -115,6 +115,9 @@ class ChessUsers(UserMixin, db.Model):
     # required for login_user, overrides id (login_user default) to implemented userID
     def get_id(self):
         return self.uid
+    
+    def get_name(self):
+        return self.name
 
     def update_games(self, game):
         self.games += "#" + str(game)
@@ -132,8 +135,8 @@ def getUser(uid):
             return user
 
 def getName(name):
-    user = ChessUsers.query.all()
-    for user in name:
+    users = ChessUsers.query.all()
+    for user in users:
         if(user.get_name() == name):
             return user
         
