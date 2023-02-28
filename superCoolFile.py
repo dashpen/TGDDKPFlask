@@ -45,9 +45,9 @@ class UserAPI:
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
-            uo.create()
+            userr = uo.create()
             # success returns json of user
-            if uo:
+            if userr:
                 return jsonify(uo.read())
             # failure returns error
             return {'message': f'Processed {name}, either a format error or User ID {uo.uid} is duplicate'}, 210
