@@ -26,18 +26,6 @@ class Roulette(db.Model):
     def user(self):
         return self._user
 
-    @user.setter
-    def user(self, value):
-        self._user = value
-
-    @property
-    def score(self):
-        return self._score
-
-    @score.setter
-    def score(self, value):
-        self._score = value
-
     def to_dict(self):
         return {"id": self.id, "user": self.user, "score": self.score}
     
