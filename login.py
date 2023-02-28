@@ -1,4 +1,4 @@
-from flask import Flask
+
 from flask import Blueprint, jsonify, request
 from flask_restful import Api, Resource 
 import requests   
@@ -6,7 +6,8 @@ import json as JSON
 import ast
 from model_chess import getName
 from model_chess import ChessUsers
-from flask_cors import CORS # import the CORS module
+
+
 # Blueprints allow this code to be procedurally abstracted from main.py, meaning code is not all in one place
 NameAPI = Blueprint('NameAPI', __name__,
                    url_prefix='/api/names')  # endpoint prefix avoid redundantly typing /api/jokes over and over
@@ -15,7 +16,8 @@ NameAPI = Blueprint('NameAPI', __name__,
 app = Flask(__name__)
 api = Api(NameAPI)
 
-CORS(api)
+# Add CORS support to the NameAPI blueprint
+
 class _Read(Resource):
     def post(self):
         body = request.get_json(force=True)
@@ -31,8 +33,11 @@ class _Read(Resource):
         
         if not user.is_password_match(password):
             return {'message': f"wrong password"}, 400
-        
         response = jsonify(user.read())
-        response.headers.add('Access-Control-Allow-Origin', '*')  # Add this line to set the CORS header
+        
+        # Add the 'Access-Control-Allow-Origin' header to the response
+        response.headers.add('Access-Control-Allow-Origin', 'https://genechang1.github.io')
+        
         return response
+
 api.add_resource(_Read, '/')
