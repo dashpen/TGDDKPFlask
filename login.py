@@ -31,7 +31,8 @@ class _Read(Resource):
         
         if not user.is_password_match(password):
             return {'message': f"wrong password"}, 400
+        
         response = jsonify(user.read())
-        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Add this line to set the CORS header
         return response
 api.add_resource(_Read, '/')
