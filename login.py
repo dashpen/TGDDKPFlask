@@ -15,7 +15,10 @@ NameAPI = Blueprint('NameAPI', __name__,
 api = Api(NameAPI)
 
 # Add CORS support to the NameAPI blueprint
-
+def after_request(response):
+    # Add the 'Access-Control-Allow-Origin' and 'Access-Control-Allow-Headers' headers to the response
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    return response
 
 class Login(Resource):
     def post(self):
