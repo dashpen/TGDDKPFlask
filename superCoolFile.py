@@ -45,12 +45,12 @@ class UserAPI:
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
-            userr = uo.create()
+            user = uo.create()
             # success returns json of user
-            if userr:
+            if user:
                 return jsonify(uo.read())
             # failure returns error
-            return {'message': f'Processed {name}, either a format error or User ID {uo.uid} is duplicate'}, 210
+            return {'message': f'{name} is duplicate'}, 210
 
     class _Read(Resource):
         def get(self):
@@ -74,14 +74,11 @@ class UserAPI:
 
     class _DeleteGame(Resource):
         def delete(self):
-            body = request.get_json()
+            body = request.get_json(force=True)
             uid = body.get('uid')
             date = body.get('date')
             user = getUser(uid)
-            games = user.games.split('#')
-            for game in games:
-                if game.date == date:
-                    user.deleteGame()
+            return user.deleteGame(date)
 
     
     class _DeleteUser(Resource):
@@ -113,4 +110,5 @@ class UserAPI:
     api.add_resource(_GetGame, '/get_game')
     api.add_resource(_UpdateChessGame, "/update_game")
     api.add_resource(_GetGames, '/get_games/<int:uid>')
+    api.add_resource(_DeleteGame, '/delete_game')
     api.add_resource(_DeleteUser, "/delete_user/<int:uid>")

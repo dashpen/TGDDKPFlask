@@ -1,4 +1,4 @@
-import os
+import os, json
 from __init__ import db, app
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,7 +13,7 @@ class ChessUsers(UserMixin, db.Model):
     
     # Define the Users schema
     uid = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), unique=False, nullable=False)
+    name = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
     dob = db.Column(db.String(255), unique = False, nullable=False)
     games = db.Column(db.String(255), unique = False, nullable=False)
@@ -21,7 +21,7 @@ class ChessUsers(UserMixin, db.Model):
     # notes = db.relationship("Notes", cascade='all, delete', backref='users', lazy=True)
 
     # constructor of a User object, initializes of instance variables within object
-    def __init__(self, name, uid="0", password="null", dob="11-11-1111", games=""):
+    def __init__(self, name='', uid="0", password="null", dob="11-11-1111", games=""):
         self.uid = make_id()
         self.name = name
         self.dob = dob
@@ -84,8 +84,22 @@ class ChessUsers(UserMixin, db.Model):
         db.session.commit()
         return None
 
-    def deleteGame(self, gameID):
-        print(self.games)
+    def deleteGame(self, date):
+        games = self.games.split('#')
+        games.pop(0)
+        for game in games:
+            gameStr = game.replace("\'", "\"")
+            thing = json.loads(gameStr)
+            if thing['date'] == date:
+                games.remove(game)
+        gameString = ""
+        for el in games:
+            gameString += str(el)
+        self.games = gameString
+        db.session.commit()
+        return gameString
+        
+
 
     # set password method is used to create encrypted password
     def set_password(self, password):
@@ -101,6 +115,9 @@ class ChessUsers(UserMixin, db.Model):
     # required for login_user, overrides id (login_user default) to implemented userID
     def get_id(self):
         return self.uid
+    
+    def get_name(self):
+        return self.name
 
     def update_games(self, game):
         self.games += "#" + str(game)
@@ -118,10 +135,10 @@ def getUser(uid):
             return user
 
 def getName(name):
-    user = ChessUsers.query.all()
-    for user in name:
+    users = ChessUsers.query.all()
+    for user in users:
         if(user.get_name() == name):
-            return name
+            return user
         
 def make_id():
     users = ChessUsers.query.all()
