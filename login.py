@@ -17,20 +17,21 @@ api = Api(NameAPI)
 
 CORS(api)
 class _Read(Resource):
-        def post(self):
-            body = request.get_json(force=True)
-            name = body.get('name')
-            if name is None or len(name) < 2:
-                return {'message': f'Name is missing, or is less than 2 characters'}, 400
-            password = body.get('password')
-            user = getName(name)
-            # user = ChessUsers.query.filter_by(_name=name).first()
-                 
-            if user is None:
-                return {'message': f"Invalid user id or password"}, 400
-            
-            if not user.is_password_match(password):
-                return {'message': f"wrong password"}, 400
-            return jsonify(user.read())
-            
+    def post(self):
+        body = request.get_json(force=True)
+        name = body.get('name')
+        if name is None or len(name) < 2:
+            return {'message': f'Name is missing, or is less than 2 characters'}, 400
+        password = body.get('password')
+        user = getName(name)
+        # user = ChessUsers.query.filter_by(_name=name).first()
+             
+        if user is None:
+            return {'message': f"Invalid user id or password"}, 400
+        
+        if not user.is_password_match(password):
+            return {'message': f"wrong password"}, 400
+        response = jsonify(user.read())
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 api.add_resource(_Read, '/')
