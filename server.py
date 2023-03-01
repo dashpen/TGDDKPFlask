@@ -13,6 +13,7 @@ api = Api(server)
 
 data = []
 
+# Function for JSON conversion, apparently there's a better way to do this, but I didn't know about it so this was my solution.
 def changeToJSON(bad):
     good = ''
     for i in bad:
@@ -23,10 +24,12 @@ def changeToJSON(bad):
     return JSON.loads(good)
 class ChessAPI:
 
+    # Reads the api 
     class _get(Resource):
         def get(self):
             return data
 
+    # Pushes directly to the api (unused)
     class _push(Resource):
         def post(self):
             global data
@@ -34,6 +37,7 @@ class ChessAPI:
             data.append(body)
             return data 
     
+    # Starts a new game instance within the api. The format below is the json format which data should be sent through in.
     class _start(Resource):
         def post(self):
             # request body format: {'gid' : {'uid1' : 1234, 'uid2' : 1234, 'move1' : 'move1', 'move2' : 'move2'}}
@@ -43,24 +47,31 @@ class ChessAPI:
             data.append(body)
             return data
         
+    # Adds a second player to a game, essentially the way that players join the game. 
+    # Checks if the uid is the default value, if it is then it adds the player and returns a value indicating this. 
+    # If it isn't the default or the game name isn't found it returns a value indicating this as well. The rest is handled in the frontend.
     class _secondPlayer(Resource):
         def post(self):
             # body format : "["uid", "gid"]"
             global data
+            success = False
             body = changeToJSON(request.get_data(..., True))
             i = -1
             for item in data:
                 i += 1
-                if body[1] in item:
+                if body[1] in item and data[i][body[1]]["uid2"] == 1234:
+                    success = True
                     data[i][body[1]]["uid2"] = body[0]
-            return data
+            return success
 
+    # Manually clears the entire database
     class _clear(Resource):
         def post(self):
             global data
             data = []
             return data
 
+    # pushes a move to the database when  
     class _pushMove(Resource):
         def post(self):
             global data
@@ -72,6 +83,7 @@ class ChessAPI:
                     data[i][body[0]]["move1"] = body[1]
                     data[i][body[0]]["move2"] = body[2]
 
+    # 
     class _createNewGid(Resource):
         def get(self):
             global data
@@ -106,4 +118,4 @@ class ChessAPI:
 
 
 if __name__ == "__main__": 
-    print("LMAO LOOSER!")
+    print("")
