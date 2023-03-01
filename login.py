@@ -19,18 +19,18 @@ class Login(Resource):
         body = request.get_json(force=True)
         name = body.get('name')
         if name is None or len(name) < 2:
-            return {'message': f'Name is missing, or is less than 2 characters'}, 210
+            return {'message': f'name is missing'}
         password = body.get('password')
         user = getName(name)
         # user = ChessUsers.query.filter_by(_name=name).first()
 
         if user is None:
-            return {'message': f"Invalid username"}, 211
+            return {'message': f"invalid username"}
 
         isPass = user.is_password_match(password)
 
         if not isPass:
-            return {'message': f"wrong password"}, 212
+            return {'message': f"wrong password"}
         
         response = jsonify(user.read())
         return response
