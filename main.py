@@ -25,6 +25,7 @@ app.register_blueprint(chess_user_api)
 app.register_blueprint(battleship_user_api)
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(NameAPI)
+app.register_blueprint(roulette_bp)
 # app.register_blueprint(roulette_bp)
 
 @app.errorhandler(404)  # catch for URL not found
