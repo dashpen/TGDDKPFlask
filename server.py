@@ -85,7 +85,7 @@ class ChessAPI:
             return gid
 
     class _removeGame(Resource):
-        def delete(self):
+        def post(self):
             global data
             body = (request.get_data(..., True))
             i = -1
