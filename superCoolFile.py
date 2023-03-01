@@ -61,23 +61,22 @@ class UserAPI:
 
     class _UpdateChessGame(Resource):
         def post(self):
-            # body = request.get_data(..., True)
             body = request.get_json(force=True)
-            user1 = getUser(int(body.get('uid1')))
+            user1 = getName(body.get('uid1'))
             user1.update_games(body)
             try:
-                user2 = getUser(int(body.get('uid2')))
+                user2 = getName(body.get('uid2'))
                 user2.update_games(body)
             except:
                 return "second user id is invalid"
             return body.get('uid1')
 
     class _DeleteGame(Resource):
-        def delete(self):
+        def post(self):
             body = request.get_json(force=True)
-            uid = body.get('uid')
+            name = body.get('name')
             date = body.get('date')
-            user = getUser(uid)
+            user = getName(name)
             return user.deleteGame(date)
 
     
@@ -99,8 +98,8 @@ class UserAPI:
                     return game
 
     class _GetGames(Resource):
-        def get(self, uid):
-            user = getUser(uid)
+        def get(self, name):
+            user = getName(name)
             games = user.games.split('#')
             return games
 
@@ -109,6 +108,6 @@ class UserAPI:
     api.add_resource(_Read, '/')
     api.add_resource(_GetGame, '/get_game')
     api.add_resource(_UpdateChessGame, "/update_game")
-    api.add_resource(_GetGames, '/get_games/<int:uid>')
+    api.add_resource(_GetGames, '/get_games/<string:name>')
     api.add_resource(_DeleteGame, '/delete_game')
     api.add_resource(_DeleteUser, "/delete_user/<int:uid>")

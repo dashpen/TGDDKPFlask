@@ -28,7 +28,7 @@ class Login(Resource):
             return {'message': f"Invalid user id or password"}, 400
 
         if not user.is_password_match(password):
-            return {'message': f"wrong password"}, 400
+            return {'message': f"wrong password"}
         response = jsonify(user.read())
         return response
 
