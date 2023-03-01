@@ -47,13 +47,15 @@ class ChessAPI:
         def post(self):
             # body format : "["uid", "gid"]"
             global data
+            success = False
             body = changeToJSON(request.get_data(..., True))
             i = -1
             for item in data:
                 i += 1
-                if body[1] in item:
+                if body[1] in item and data[i][body[1]]["uid2"] == 1234:
+                    success = True
                     data[i][body[1]]["uid2"] = body[0]
-            return data
+            return success
 
     class _clear(Resource):
         def post(self):
@@ -106,4 +108,4 @@ class ChessAPI:
 
 
 if __name__ == "__main__": 
-    print("LMAO LOOSER!")
+    print("")
