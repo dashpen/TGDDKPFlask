@@ -72,7 +72,7 @@ class UserAPI:
             return body.get('uid1')
 
     class _DeleteGame(Resource):
-        def delete(self):
+        def post(self):
             body = request.get_json(force=True)
             name = body.get('name')
             date = body.get('date')
