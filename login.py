@@ -35,4 +35,4 @@ class Login(Resource):
         response = jsonify(user.read())
         return response
 
-api.add_resource(Login, '/')
+api.add_resource(Login, '/', methods = ['GET', 'POST'])
