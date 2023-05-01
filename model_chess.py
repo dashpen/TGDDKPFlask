@@ -83,7 +83,7 @@ class ChessUsers(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
         return None
-
+# Code from different part of the project
     def deleteGame(self, date):
         games = self.games.split('#')
         games.pop(0)
@@ -133,6 +133,8 @@ def getUser(uid):
     for user in users:
         if(user.get_id() == uid):
             return user
+    else:
+        return "NULL"
 
 def getName(name):
     users = ChessUsers.query.all()
