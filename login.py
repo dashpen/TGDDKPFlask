@@ -3,7 +3,7 @@ from flask_restful import Api, Resource
 from model_chess import getName, ChessUsers
 
 
-NameAPI = Blueprint('NameAPI', __name__, url_prefix='/api/names/')
+NameAPI = Blueprint('NameAPI', __name__, url_prefix='/api/chess_users/')
 
 api = Api(NameAPI)
 
