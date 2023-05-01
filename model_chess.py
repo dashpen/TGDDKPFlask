@@ -20,7 +20,7 @@ class ChessUsers(UserMixin, db.Model):
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # notes = db.relationship("Notes", cascade='all, delete', backref='users', lazy=True)
 
-    # constructor of a User object, initializes of instance variables within object
+
     def __init__(self, name='', uid="0", password="null", dob="11-11-1111", games=""):
         self.uid = make_id()
         self.name = name
@@ -101,18 +101,18 @@ class ChessUsers(UserMixin, db.Model):
         
 
 
-    # set password method is used to create encrypted password
+
     def set_password(self, password):
         """Create hashed password."""
         self.password = generate_password_hash(password, method='sha256')
 
-    # check password to check versus encrypted password
+
     def is_password_match(self, password):
         """Check hashed password."""
         result = check_password_hash(self.password, password)
         return result
 
-    # required for login_user, overrides id (login_user default) to implemented userID
+
     def get_id(self):
         return self.uid
     
