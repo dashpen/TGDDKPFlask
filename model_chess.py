@@ -134,13 +134,15 @@ def getUser(uid):
         if(user.get_id() == uid):
             return user
     else:
-        return "NULL"
+        return "Invalid user"
 
 def getName(name):
     users = ChessUsers.query.all()
     for user in users:
         if(user.get_name() == name):
             return user
+    else: 
+        return "Invalid name"
         
 def make_id():
     users = ChessUsers.query.all()
