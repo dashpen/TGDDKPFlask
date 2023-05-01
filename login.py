@@ -23,12 +23,12 @@ class Login(Resource):
         # user = ChessUsers.query.filter_by(_name=name).first()
 
         if user is None:
-            return {'message': f"invalid username D:"}
+            return {'message': f"invalid username"}
 
         isPass = user.is_password_match(password)
 
         if not isPass:
-            return {'message': f"wrong password D:"}
+            return {'message': f"wrong password"}
         
         response = jsonify(user.read())
         return response
