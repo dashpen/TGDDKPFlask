@@ -142,7 +142,7 @@ def getName(name):
         if(user.get_name() == name):
             return user
     else: 
-        return "Invalid name"
+        return None
         
 def make_id():
     users = ChessUsers.query.all()
